@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ckb" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bo shazadakam💗</title>
+    <style>
+        /* Custom Font Definition matching your uploaded file name */
+        @font-face {
+            font-family: 'ShasenemWefayi';
+            src: url('shasenem-wefayi_2.ttf') format('truetype');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'ShasenemWefayi', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            position: relative;
+        }
+
+        /* Galaxy & Starry Background Canvas */
+        #spaceCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Falling Hearts Layer */
+        .heart-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .falling-heart {
+            position: absolute;
+            top: -50px;
+            color: #ff4d6d;
+            font-size: 24px;
+            user-select: none;
+            animation: fall linear infinite;
+            opacity: 0.45;
+            text-shadow: 0 0 5px rgba(255, 77, 109, 0.3);
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0.45;
+            }
+            50% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg);
+                opacity: 0.1;
+            }
+        }
+
+        /* Center Text Boxes - Smooth Fade Transition */
+        .message-box {
+            position: absolute;
+            z-index: 3;
+            text-align: center;
+            max-width: 650px;
+            width: 90%;
+            padding: 30px;
+            background: rgba(10, 10, 20, 0.65);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.95);
+            transition: opacity 1.2s ease-in-out, visibility 1.2s ease-in-out, transform 1.2s ease-in-out;
+            pointer-events: none;
+        }
+
+        .message-box.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-family: 'ShasenemWefayi', sans-serif;
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 117, 140, 0.3);
+        }
+
+        #typed-text {
+            font-size: 1.3rem;
+            line-height: 2;
+            color: #f1f1f1;
+            white-space: pre-wrap;
+            min-height: 120px;
+            text-align: right;
+            direction: rtl;
+            font-family: 'ShasenemWefayi', sans-serif;
+        }
+
+        /* Typewriter Cursor */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2rem;
+            background-color: #ff7eb3;
+            margin-right: 3px;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Galaxy Space & Stars Canvas -->
+    <canvas id="spaceCanvas"></canvas>
+
+    <!-- Falling Hearts Container -->
+    <div class="heart-container" id="heartContainer"></div>
+
+    <!-- 1. First Big Initial Text Box -->
+    <div class="message-box active" id="firstTextBox">
+        <h1>بۆ شازادە نازولیییییییییی  ✨</h1>
+        <p style="font-size: 1.3rem; color: #ddd; margin-top: 10px; font-family: 'ShasenemWefayi', sans-serif;"> </p>
+    </div>
+
+    <!-- 2. Second Long Animation Message Box -->
+    <div class="message-box" id="secondTextBox">
+        <h1>✨ ❤️</h1>
+        <div id="typed-text"><span class="cursor" id="cursor"></span></div>
+    </div>
+
+    <script>
+        // --- 1. Canvas Starry Galaxy Background with Active Rightward Drift ---
+        const canvas = document.getElementById('spaceCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const stars = [];
+        const numStars = 350;
+
+        for (let i = 0; i < numStars; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.8,
+                alpha: Math.random(),
+                alphaSpeed: Math.random() * 0.02 + 0.005,
+                driftSpeed: Math.random() * 0.4 + 0.15
+            });
+        }
+
+        function drawGalaxy() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const gradient1 = ctx.createRadialGradient(canvas.width * 0.7, canvas.height * 0.3, 50, canvas.width * 0.7, canvas.height * 0.3, 400);
+            gradient1.addColorStop(0, 'rgba(75, 0, 130, 0.2)');
+            gradient1.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradient1;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const gradient2 = ctx.createRadialGradient(canvas.width * 0.2, canvas.height * 0.8, 30, canvas.width * 0.2, canvas.height * 0.8, 350);
+            gradient2.addColorStop(0, 'rgba(20, 40, 90, 0.25)');
+            gradient2.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradient2;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                ctx.fill();
+
+                star.x += star.driftSpeed;
+                if (star.x > canvas.width) {
+                    star.x = 0;
+                }
+
+                star.alpha += star.alphaSpeed;
+                if (star.alpha > 1 || star.alpha < 0.2) {
+                    star.alphaSpeed = -star.alphaSpeed;
+                }
+            });
+
+            requestAnimationFrame(drawGalaxy);
+        }
+        drawGalaxy();
+
+        // --- 2. Falling Hearts Animation ---
+        const heartContainer = document.getElementById('heartContainer');
+        const heartSymbols = ['❤️', '💖', '💗', '✨', '💕'];
+
+        function createFallingHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('falling-heart');
+            heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            
+            const duration = Math.random() * 4 + 4;
+            heart.style.animationDuration = duration + 's';
+            
+            const size = Math.random() * 15 + 15;
+            heart.style.fontSize = size + 'px';
+
+            heartContainer.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createFallingHeart, 300);
+
+        // --- 3. Sequence Timing Logic ---
+        const firstBox = document.getElementById('firstTextBox');
+        const secondBox = document.getElementById('secondTextBox');
+        const fullText = `ڕۆژی لەدایک بوونت پیرۆز بێ هەناسەکەم ڕەبی بەساقەو بم کچێ زۆرم خۆشەوێی بەقوربانت بم شازادەکەم 🥺😭✨ ڕەبی هەموو ڕۆژێکت پڕ لە خۆشی و شادی بێ هەی کچە بچکۆلەنەکەم کوبانت بم 🥺🌹ئەوڕۆ جوجوە بچوکەکەم لەدایک ئەبێ ویش بەقوربانت بم🗿😅💕 ئینشاالله ئەو ڕۆژە دێ من و تۆ دەسی یەکتر ئەگرین ئەی ڕەبی خوا بۆمن و بۆ دایک و باوکت بێڵێ هەی قالۆچە بچکۆلانەکەم کە تۆ هاتیە ژیانم دڵم خۆشبوو خۆشترین ڕۆژەکانم لەگەڵ تۆ دەسی پێکرد هەی پەپولەکەم🥺🦋 چاو جوانەکەم بەخوا تا ماوی هەر شازادەی من ئەبی شازادە بەس لەتۆ جوانە کوبانت بم ڕەبییییییی مواهههههههه😭💓💓 بەخوا بەخوا تا قسەو بۆ بکەم کەمە تۆ شایەنی زۆر لەوە زیاتری بمرم بۆت ئێ🥺😭💕 نازولی جیانەکەم تخوا قەت لێم دوور مەبە بەخوا بەرگەی بێ تۆیی ناگرم تخوا تخوا قەت بێ خۆتم مەکە تخوا 🥺💫💝`;
+
+        let index = 0;
+        const speed = 75;
+        const textElement = document.getElementById('typed-text');
+        const cursorElement = document.getElementById('cursor');
+
+        function typeWriter() {
+            if (index < fullText.length) {
+                cursorElement.insertAdjacentHTML('beforebegin', fullText.charAt(index));
+                index++;
+                setTimeout(typeWriter, speed);
+            } else {
+                cursorElement.style.display = 'none';
+            }
+        }
+
+        setTimeout(() => {
+            firstBox.classList.remove('active');
+            
+            setTimeout(() => {
+                secondBox.classList.add('active');
+                typeWriter();
+            }, 1000);
+
+        }, 4000);
+    </script>
+</body>
+</html>
